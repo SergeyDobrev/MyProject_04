@@ -1,16 +1,3 @@
-var objArray = new Array();
-var sideArray = ['rotateX(-90deg)', 'rotateY(-90deg)', 'rotateY(90deg)', ''];
-
-var a = 45;		// angle of rotation of objScene
-var b = 0;
-var g = 45;
-
-var vh = $(window).height();
-
-if ($(window).height() > $(window).width()) {
-	vh = $(window).width();
-}
-
 $('body').css({	'margin': '0 auto',
 				'background-color': 'black',
 				'overflow': 'hidden',
@@ -20,69 +7,72 @@ $('body').css({	'margin': '0 auto',
 var objScene = document.createElement('div');
 $('body').append(objScene);
 $(objScene).addClass('preserve3d');
-objScene.style.transform = 'rotateX(' + a + 'deg) rotateY(' + b + 'deg) rotateZ(' + g + 'deg)';
-$(objScene).css({	'height': 0.7 * vh,
-					'width': 0.7 * vh,
+objScene.style.transform = 'rotateX(45deg) rotateZ(45deg)';
+$(objScene).css({	'height': '70vh',
+					'width': '70vh',
 					'margin': '0 auto',
-					'margin-top': 0.1 * vh,
-					'border': '1px solid rgba(0,0,255,0.5)',
-					'background-color': 'rgba(0,0,255,0.1)'
+					'margin-top': '10vh' 
 				});
 
-for (var i = 0; i < 18; i++) {
+var lengthArray = 20;
+var objArray = new Array();
+for (var i = 0; i < lengthArray; i++) {
 	objArray[i] = new Array();
-	for (var j = 0; j < 18; j++) {
+	for (var j = 0; j < lengthArray; j++) {
 		objArray[i][j] = document.createElement('div');
 		$(objScene).append(objArray[i][j]);
 		$(objArray[i][j]).addClass('preserve3d');
-		$(objArray[i][j]).css({	'height': '8vh',
-								'width': '8vh',
+		$(objArray[i][j]).css({	'height': '6vh',
+								'width': '6vh',
 								'position': 'absolute'
 							});
-		objArray[i][j].style.transform = 'translateX(' + i * 4 + 'vh) translateY(' + j * 4 + 'vh)';
-		objArray[i][j].style.transition = 'transform 1s';
+		objArray[i][j].style.transform = 'translateX(' + i * 3 + 'vh) translateY(' + j * 3 + 'vh)';
+		objArray[i][j].style.transition = 'transform 0.75s';
 
+		var sideArray = ['rotateX(-90deg)', 'rotateY(90deg)',''];
 		for (var n = 0; n < sideArray.length; n++) {
 			var objSide = document.createElement('div');
 			$(objSide).addClass('preserve3d');
 			$(objArray[i][j]).append(objSide);
-			$(objSide).css({	'height': '4vh',
-								'width': '4vh',
+			$(objSide).css({	'height': '3vh',
+								'width': '3vh',
 								'margin': '0 auto',
 								'position': 'absolute',
-								'background-color': 'rgb(' + (50 + 50 * n) + ',0,' + (50 + 50 * n) + ')',
-								'transform': sideArray[n] + 'translateZ(2vh)'
+								'background-color': 'rgb(' + (70 + 45 * n) + ',0,' + (70 + 45 * n) + ')',
+								'transform': sideArray[n] + 'translateZ(1.5vh)'
 							});
 		}
 	}
 }
 
-var IntervalId = window.setInterval(function() {
-	var m = 0;
-	var n = 0;
+var intervalID = setInterval(myIntervalFun, 2500);
 
-/*	objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(5vh)';
-	var TimerId = setTimeout(function() {
-		objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(-5vh)';
-	}, 1000);
+function myIntervalFun() {
 
-*/
-	m++;
-	var TimerId1 = window.setTimeout(function() {
-		objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(5vh)';
-	}, 100);
-	var TimerId2 = window.setTimeout(function() {
-		objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(-5vh)';
-	}, 1100);
+	var TimerId1 = setTimeout(myTimeoutFun1, 750);
+	var TimerId2 = setTimeout(myTimeoutFun2, 1500);
 
-	n++;
-	var TimerId3 = window.setTimeout(function() {
-		objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(5vh)';
-	}, 2200);
-	var TimerId4 = window.setTimeout(function() {
-		objArray[m][n].style.transform = 'translateX(' + m * 4 + 'vh) translateY(' + n * 4 + 'vh) translateZ(-5vh)';
-	}, 2300);
+	for (var i = 0; i < objArray.length; i++) {
+		for (var j = 0; j < objArray.length; j++) {
+			var t = 15 * Math.cos(j/6+29.8) * Math.sin(i/6);
+			objArray[i][j].style.transform = 'translateX(' + i * 3 + 'vh) translateY(' + j * 3 + 'vh) translateZ(' + t +'vh)';
+		}
+	}
 
+	function myTimeoutFun1() {
+		for (var i = 0; i < objArray.length; i++) {
+			for (var j = 0; j < objArray.length; j++) {
+				var t = - 15 * Math.cos(j/6+29.8) * Math.sin(i/6);
+				objArray[i][j].style.transform = 'translateX(' + i * 3 + 'vh) translateY(' + j * 3 + 'vh) translateZ(' + t + 'vh)';
+			}
+		}		
+	}
 
-} ,5000);
-
+	function myTimeoutFun2() {
+		for (var i = 0; i < objArray.length; i++) {
+			for (var j = 0; j < objArray.length; j++) {
+				objArray[i][j].style.transform = 'translateX(' + i * 3 + 'vh) translateY(' + j * 3 + 'vh) translateZ(' + 0 + 'vh)';
+			}
+		}		
+	}
+}
